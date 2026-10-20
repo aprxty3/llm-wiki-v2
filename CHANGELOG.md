@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - A note no longer vanishes when its summary or a field holds a `---` line (the frontmatter ended there, so the note failed to parse and left the tree and its index). A byte order mark no longer hides the frontmatter, and form feeds and U+2028 in a body stay as written. Text written by hand after a note's See-also list is kept when links change: it moves above the list, which stays one section. A note that is not UTF-8 is skipped with a warning and named by `check`, instead of stopping the whole wiki; an `index.md` or `log.md` saved as Latin-1 is read as such and written back as UTF-8.
 - A model failure in `relate`, which runs once the note is written, no longer fails the ingest: the note is filed and logged without See-also links, with a `relate` / `error` decision in the trace. Before, the note was left on disk with no log line, the sync stopped, and the next sync skipped it, so the links never came. `{"related": null}` reads as no links, and `"/a.md"` and `"a.md"` count as one link.
+- A merge no longer loses the incoming note when it does not fit what is left of the call after the existing note: it was cut to that room (to nothing for a note that filled it), the model merged what was left, and the note was logged as merged. Now no model is asked: the incoming body is added to the note as a section headed by its title, and the tags are joined.
 
 ## [0.6.0] - 2026-10-19
 
